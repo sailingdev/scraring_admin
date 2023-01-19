@@ -1,0 +1,109 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Admin Dashboard</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'client/assets/vendor/datatables/media/css/dataTables.bootstrap4.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Admin Dashboard</h2>
+
+            <div class="right-wrapper text-right">
+                <ol class="breadcrumbs">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li><span>Dashboard</span></li>
+                </ol>
+
+                <a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
+            </div>
+        </header>
+
+        {#        <!-- start: page -->#}
+        <div class="row">
+            <div class="col-xl-12 col-md-12">
+                <header class="page-header1">
+                    <h2>Scarping Settings</h2>
+                </header>
+                <section class="card card-featured-left card-featured-primary mb-3">
+                    <div class="card-body" style="height: 280px">
+                        <h3>Cron Job Settings</h3>
+
+
+
+                    </div>
+                </section>
+
+                <section class="card card-featured-left card-featured-primary mb-3">
+                    <div class="card-body" style="height: 280px">
+                        <h3>Data Saving Settings</h3>
+                        <h3> Rename Images</h3>
+
+
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+    </section>
+
+    <div class="modal" id="modal_logged_detail">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="black-ip-address-add" class="ml-3">Ip Address: <span id="ip_address"></span>
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="black-ip-address-add" class="ml-3">Browser: <span id="browser"></span> </label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="black-ip-address-add" class="ml-3">Logged at: <span id="logged_time"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    
+    <script src="{% static 'client/assets/vendor/jquery-appear/jquery-appear.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/owl.carousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/isotope/isotope.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/media/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+{% endblock %}
+
+{% block page_js %}
+
+
+    <script>
+
+        $('#datatable-default').dataTable({});
+
+    </script>
+{% endblock %}

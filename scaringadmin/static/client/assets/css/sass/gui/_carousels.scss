@@ -1,0 +1,75 @@
+/* Owl Carousel */
+.owl-carousel {
+	margin-bottom: $spacement-lg;
+	.owl-item {
+		img {
+			transform-style: unset;
+		}
+	}
+	.thumbnail {
+		margin-#{$right}: 1px;
+	}
+	.item-video {
+		height: 300px;
+	}
+	.owl-nav {
+		top: 50%;
+		position: absolute;
+		margin-top: -20px;
+		width: 100%;
+		.owl-prev, .owl-next {
+			display: inline-block;
+			position: absolute;
+			width: 30px;
+			height: 30px;
+		}
+		.owl-prev {
+			#{$left}: -18px;
+			&:before {
+				font-family: FontAwesome;
+				content: "\f053";
+				@include if-rtl {
+					content: "\f054";
+				}
+				position: relative;
+				#{$left}: -1px;
+				top: 1px;
+			}
+		}
+		.owl-next {
+			#{$right}: -18px;
+			&:before {
+				font-family: FontAwesome;
+				content: "\f054";
+				@include if-rtl {
+					content: "\f053";
+				}
+				position: relative;
+				#{$left}: 2px;
+				top: 1px;
+			}
+		}
+	}
+}
+
+/* Responsive */
+@media (max-width: 575px) {
+
+	.owl-carousel-spaced {
+		margin-#{$left}: 0;
+	}
+
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+
+	.carousel-areas {
+		.owl-carousel {
+			.owl-nav {
+				display: none;
+			}
+		}
+	}
+
+}

@@ -1,0 +1,302 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Admin Dashboard</title>
+{% endblock %}
+
+{% block css %}
+
+    <style>
+        td.details-control {
+            cursor: pointer;
+            text-align: center;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="{% static 'client/assets/vendor/datatables/media/css/dataTables.bootstrap4.css' %}"/>
+
+
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Admin Dashboard</h2>
+
+            <div class="right-wrapper text-right">
+                <ol class="breadcrumbs">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li><span>Dashboard</span></li>
+                </ol>
+
+                <a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
+            </div>
+        </header>
+
+        {#<!-- start: page -->#}
+        <div class="row">
+            <div class="col-xl-12 col-md-12">
+                <header class="page-header1">
+                    <h2>Data</h2>
+                </header>
+                <section class="card card-featured-left card-featured-primary mb-3">
+                    <div class="card-body">
+
+
+                        <table class="table table-bordered table-striped mb-0" id="datatable-tabletools">
+                            <thead>
+                            <tr>
+                                <th>Title(Name)</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Price</th>
+                                <th>Currency</th>
+                                <th>Location</th>
+                                <th>Category</th>
+                                <th>Username(ad owner)</th>
+                                <th>Phone number</th>
+                                <th>Email</th>
+                                <th>Posted At</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </section>
+
+
+    <div class="modal" id="modal_gallery">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <div class="popup-gallery">
+                            <a class="float-left mb-1 mr-1" href="img/projects/project.jpg" title="Project 1">
+                                <div class="img-fluid">
+
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block js %}
+
+    <script src="{% static 'client/assets/vendor/jquery-appear/jquery-appear.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/owl.carousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/isotope/isotope.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/media/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/buttons.html5.min.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/JSZip-2.5.0/jszip.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/pdfmake-0.1.32/pdfmake.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/pdfmake-0.1.32/vfs_fonts.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/magnific-popup/jquery.magnific-popup.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/jquery-placeholder/jquery-placeholder.js' %}"></script>
+
+
+
+
+
+{% endblock %}
+
+{% block page_js %}
+
+    <script>
+        function format(d) {
+            // `d` is the original data object for the row
+            return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                '<tr style="background: white;">' +
+                '<td style="width: 100%; word-break: break-all;  border-top-width: 0">' + d.description + '</td>' +
+                '</tr>' +
+                '</table>';
+        }
+
+        (function ($) {
+            'use strict';
+            var datatableInit = function () {
+                var $table = $('#datatable-tabletools');
+
+                var table = $table.DataTable({
+
+                    "processing": true,
+                    "serverSide": true,
+                    "responsive": true,
+
+                    language: {
+                        "sSearchPlaceholder": "Search..",
+                        "lengthMenu": "_MENU_",
+                        "search": "_INPUT_",
+                    },
+
+                    "dom": 'Bfrtip',
+                    "buttons": ['print', 'csv', 'excel', 'pdf'],
+
+
+                    "ajax": {
+                        "url": "{% url "getMinedData" %}",
+                        "type": "POST",
+                        "data": function (d) {
+                            d.csrfmiddlewaretoken = $('{% csrf_token %}').val()
+                        }
+                    },
+                    "pageLength": 10,
+
+                    'searching': true,
+                    "order": [[3, "desc"]],
+                    "columnDefs": [
+                        {
+                            "targets": [-1],
+                            "orderable": false
+                        },
+                        {
+                            "targets": "_all",
+                            "searchable": false
+                        }
+                    ],
+
+                    "columns": [
+                        {
+                            "data": "title",
+                        },
+                        {
+                            "className": 'details-control',
+                            "orderable": false,
+                            "data": null,
+                            "defaultContent": '<i class="fa fa-plus"></i>',
+                        },
+
+                        {
+                            "data": "image",
+                            "render": function (data) {
+                                var result = data.split('|');
+                                var imagesString = "'" + data + "'";
+                                var out = "";
+                                var count = result.length;
+                                out += '<a href="javascript:viewImage(' + imagesString + ')" data-images="' + data + '" ><img src="' + result[0] + '" width="60" height="60" class="mb-1"><br></a>';
+                                out += "<div style='color: blue; text-align: center;'> (" + count + ")</span>"
+                                return out;
+                            }
+                        },
+                        {
+                            "data": "price",
+                        },
+                        {
+                            "data": "currency",
+                        },
+                        {
+                            "data": "location",
+                        },
+                        {
+                            "data": "category",
+                        },
+                        {
+                            "data": "username",
+                        },
+                        {
+                            "data": "phonenumber",
+                        },
+                        {
+                            "data": "email",
+                        },
+                        {
+                            "data": "posted_at",
+                        }
+                    ],
+
+
+                });
+
+                // Add event listener for opening and closing details
+                $('#datatable-tabletools tbody').on('click', 'td.details-control', function () {
+                    var tr = $(this).closest('tr');
+                    var row = table.row(tr);
+
+                    if (row.child.isShown()) {
+                        // This row is already open - close it
+                        row.child.hide();
+                        tr.removeClass('shown');
+                        $(this).empty();
+                        $(this).append("<i class=\"fa fa-plus\"></i>")
+                    }
+                    else {
+                        // Open this row
+                        row.child(format(row.data())).show();
+                        tr.addClass('shown');
+                        $(this).empty();
+                        $(this).append("<i class=\"fa fa-minus\"></i>")
+                    }
+                });
+            };
+
+            $(function () {
+                datatableInit();
+            });
+        }).apply(this, [jQuery]);
+
+        function viewImage(data) {
+
+            $('.popup-gallery').empty();
+
+            var images = data.split('|');
+            var out = "";
+            images.map((item) => {
+                out += '<a class="float-left mb-1 mr-1" href="'+ item +'" title="Project 1"><div class="img-fluid"><img src="'+ item +'" width="105"></div></a>';
+            });
+
+            $('.popup-gallery').append(out);
+
+            $('#modal_gallery').modal();
+        }
+
+
+        $('.popup-gallery').magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+            }
+        });
+
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% load static %}
+
+<!doctype html>
+<html class="fixed">
+	<head>
+
+		<!-- Basic -->
+		<meta charset="UTF-8">
+
+		<meta name="keywords" content="Question Answer How What" />
+		<meta name="description" content="CherryCert">
+		<meta name="author" content="encoad">
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<!-- Web Fonts  -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="{% static 'client/assets/vendor/bootstrap/css/bootstrap.css' %}" />
+		<link rel="stylesheet" href={% static 'client/assets/vendor/animate/animate.css' %}>
+
+		<link rel="stylesheet" href={% static 'client/assets/vendor/font-awesome/css/font-awesome.css' %} />
+		<link rel="stylesheet" href={% static 'client/assets/vendor/magnific-popup/magnific-popup.css' %} />
+		<link rel="stylesheet" href={% static 'client/assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css' %} />
+
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href={% static 'client/assets/css/theme.css' %} />
+
+		<!-- Skin CSS -->
+		<link rel="stylesheet" href={% static 'client/assets/css/skins/default.css' %} />
+
+		<!-- Theme Custom CSS -->
+		<link rel="stylesheet" href={% static 'client/assets/css/custom.css' %}>
+
+		<!-- Head Libs -->
+		<script src={% static 'client/assets/vendor/modernizr/modernizr.js' %}></script>
+
+	</head>
+	<body>
+		<!-- start: page -->
+			<section class="body-error error-outside">
+				<div class="center-error">
+
+					<div class="error-header">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-lg-8">
+										<a href="/" class="logo">
+											<img src={% static 'client/assets/img/logo.png' %} height="54" alt="Porto Admin" />
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-8">
+							<div class="main-error mb-3">
+								<h2 class="error-code text-dark text-center font-weight-semibold m-0">404 <i class="fa fa-file"></i></h2>
+								<p class="error-explanation text-center">We're sorry, but the page you were looking for doesn't exist.</p>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<h4 class="text">Here are some useful links</h4>
+							<ul class="nav nav-list flex-column primary">
+								<li class="nav-item">
+									<a class="nav-link" href="{% url 'admin_index' %}"><i class="fa fa-caret-right text-dark"></i> Dashboard</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{% url 'user_profile' %}"><i class="fa fa-caret-right text-dark"></i> User Profile</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+		<!-- end: page -->
+
+		<!-- Vendor -->
+		<script src={% static 'client/assets/vendor/jquery/jquery.js' %}></script>
+		<script src={% static 'client/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js' %}></script>
+		<script src={% static 'client/assets/vendor/popper/umd/popper.min.js' %}></script>
+		<script src={% static 'client/assets/vendor/bootstrap/js/bootstrap.js' %}></script>
+		<script src={% static 'client/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js' %}></script>
+		<script src={% static 'client/assets/vendor/common/common.js' %}></script>
+		<script src={% static 'client/assets/vendor/nanoscroller/nanoscroller.js' %}></script>
+		<script src={% static 'client/assets/vendor/magnific-popup/jquery.magnific-popup.js' %}></script>
+		<script src={% static 'client/assets/vendor/jquery-placeholder/jquery-placeholder.js' %}></script>
+
+		<!-- Theme Base, Components and Settings -->
+		<script src={% static 'client/assets/js/theme.js' %}></script>
+
+		<!-- Theme Custom -->
+		<script src={% static 'client/assets/js/custom.js' %}></script>
+
+		<!-- Theme Initialization Files -->
+		<script src={% static 'client/assets/js/theme.init.js' %}></script>
+
+	</body>
+</html>

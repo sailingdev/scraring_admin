@@ -1,0 +1,120 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Admin Dashboard</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'client/assets/vendor/datatables/media/css/dataTables.bootstrap4.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Admin Dashboard</h2>
+
+            <div class="right-wrapper text-right">
+                <ol class="breadcrumbs">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li><span>Dashboard</span></li>
+                </ol>
+
+                <a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
+            </div>
+        </header>
+
+        {#        <!-- start: page -->#}
+        <div class="row">
+            <div class="col-xl-12 col-md-12">
+                <header class="page-header1">
+                    <h2>Site Settings - Email Settings</h2>
+                </header>
+                <section class="card card-featured-left card-featured-primary mb-3">
+                    <div class="card-body" style="min-height: 280px">
+                        <form method="post" action="{% url 'update_email_setting' %}">
+                            {% csrf_token %}
+                            <div class="checkbox-custom checkbox-default">
+                            <input type="checkbox" checked="" id="checkboxExample1">
+                            <label for="checkboxExample1">Enable Smtp</label>
+                        </div>
+
+                        <h5 class="mt-4">* Smpt SSL *</h5>
+                        <div class="radio-custom d-inline-block">
+                            <input type="radio" id="radioExample1" name="radioExample" checked>
+                            <label for="radioExample1">Enable</label>
+                        </div>
+                        <div class="radio-custom d-inline-block ml-3">
+                            <input type="radio" id="radioExample2" name="radioExample">
+                            <label for="radioExample2">Disable</label>
+                        </div>
+
+                            <input name="smtp_id" value="{{ setting_email.id }}" type="hidden">
+
+                        <div class="form-group">
+                            <label class="control-label text-lg-right" for="inputDefault">SMTP Port *</label>
+                            <div class="w-75">
+                                <input type="text" class="form-control" id="inputDefault" name="smtp_port" value="{{ setting_email.smtp_port }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label text-lg-right" for="inputDefault">SMTP Host *</label>
+                            <div class="w-75">
+                                <input type="text" class="form-control" id="inputDefault" value="{{ setting_email.smtp_host }}" name="smtp_host">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label text-lg-right" for="inputDefault">SMTP Email *</label>
+                            <div class="w-75">
+                                <input type="text" class="form-control" id="inputDefault" value="{{ setting_email.smtp_email }}" name="smtp_email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label text-lg-right" for="inputDefault">SMTP Password *</label>
+                            <div class="w-75">
+                                <input type="text" class="form-control" id="inputDefault" value="{{ setting_email.smtp_password }}" name="smtp_password">
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                            <button class="btn w-25" style="background-color: #171717; color: white" type="submit">Save</button>
+                            </div>
+                        </div>
+
+                        </form>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </section>
+
+
+{% endblock %}
+
+{% block js %}
+    
+    <script src="{% static 'client/assets/vendor/jquery-appear/jquery-appear.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/owl.carousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/isotope/isotope.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/media/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+{% endblock %}
+
+{% block page_js %}
+
+
+    <script>
+
+        $('#datatable-default').dataTable({});
+
+    </script>
+{% endblock %}

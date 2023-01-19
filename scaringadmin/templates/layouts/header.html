@@ -1,0 +1,57 @@
+{% load static %}
+
+<!-- start: header -->
+<header class="header">
+    <div class="logo-container">
+        <a href="/" class="logo">
+            <img src="{% static 'client/assets/img/logo.png' %}" width="102" height="40" alt="Porto Admin" />
+        </a>
+        <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+            <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+        </div>
+    </div>
+
+    <!-- start: search & user box -->
+    <div class="header-right">
+
+
+        <span class="separator"></span>
+
+        <div id="userbox" class="userbox">
+            <a href="#" data-toggle="dropdown">
+                <figure class="profile-picture">
+                    {% if user.photo == '' %}
+                        <img src="/media/img/users/user_avatar.png" width="50" height="35" class="rounded-circle">
+                    {% else %}
+                        <img src="/media/img/users/{{ user.photo }}" width="50" height="35" class="rounded-circle">
+                    {% endif %}
+                </figure>
+                <div class="profile-info" data-lock-name="{{ user.first_name }}" data-lock-email="{{ user.email }}">
+                    <span class="name">
+                        {% if user.is_authenticated %}
+                            {{ user.first_name }}
+                        {% endif %}
+                    </span>
+                    <span class="role">administrator</span>
+                </div>
+
+                <i class="fa custom-caret"></i>
+            </a>
+
+            <div class="dropdown-menu">
+                <ul class="list-unstyled mb-2">
+                    <li class="divider"></li>
+                    <li class="hidden">
+{#                        <a role="menuitem" tabindex="-1" href="{% url 'user_profile' %}"><i class="fa fa-user"></i> My Profile</a>#}
+                        <a role="menuitem" tabindex="-1" href=""><i class="fa fa-user"></i> My Profile</a>
+                    </li>
+                    <li>
+                        <a role="menuitem" tabindex="-1" href="{% url 'sign_out' %}"><i class="fa fa-power-off"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- end: search & user box -->
+</header>
+<!-- end: header -->

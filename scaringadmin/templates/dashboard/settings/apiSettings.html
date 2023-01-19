@@ -1,0 +1,100 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Admin Dashboard</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'client/assets/vendor/datatables/media/css/dataTables.bootstrap4.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Admin Dashboard</h2>
+
+            <div class="right-wrapper text-right">
+                <ol class="breadcrumbs">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li><span>Dashboard</span></li>
+                </ol>
+
+                <a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
+            </div>
+        </header>
+
+        {#        <!-- start: page -->#}
+        <div class="row">
+            <div class="col-xl-12 col-md-12">
+                <header class="page-header1">
+                    <h2>Site Settings - Api Settings</h2>
+
+                </header>
+                <section class="card card-featured-left card-featured-primary mb-3">
+                    <div class="card-body" style="min-height: 280px">
+                        <h3>Api Username</h3>
+                        <input class="form-control form-control-lg" name="restfulapi" placeholder="RestFul API" type="text">
+
+                        <h3>Api Password</h3>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row ml-0">
+                                    <input class="form-control col-md-5 form-control-lg" name="apipassword" placeholder="API Password" type="password">
+                                    <i class="fa fa-eye text-color-primary" style="font-size: 30pt; margin-left: 20px; cursor: pointer"></i>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                            <button class="btn btn-primary pull-right" name="generate_password"  type="button">Generate Password</button>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                            <button class="btn btn-success w-25">Restore Default</button>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                            <button class="btn w-25" style="background-color: #171717; color: white">Save as new</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </section>
+
+
+{% endblock %}
+
+{% block js %}
+    
+    <script src="{% static 'client/assets/vendor/jquery-appear/jquery-appear.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/owl.carousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/isotope/isotope.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/media/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+{% endblock %}
+
+{% block page_js %}
+
+
+    <script>
+
+        $('#datatable-default').dataTable({});
+
+    </script>
+{% endblock %}

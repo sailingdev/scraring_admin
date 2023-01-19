@@ -1,0 +1,191 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Admin Dashboard</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'client/assets/vendor/datatables/media/css/dataTables.bootstrap4.css' %}"/>
+    <link rel="stylesheet" href="{% static 'client/assets/vendor/chartist/chartist.min.css' %}"/>
+
+
+{% endblock %}
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Admin Dashboard</h2>
+
+            <div class="right-wrapper text-right">
+                <ol class="breadcrumbs">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li><span>Dashboard</span></li>
+                </ol>
+
+                <a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
+            </div>
+        </header>
+
+        <!-- start: page -->
+        <div class="row">
+            <div class="col-lg-12" style="height: 300px">
+                <section class="card" style="height: 300px">
+                    <header class="card-header">
+                        <div class="card-actions">
+                            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                            <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                        </div>
+
+                        <h2 class="card-title">Data Mined</h2>
+                    </header>
+                    <div class="card-body">
+                        <div id="ChartistOverlappingBarsOnMobile" class="ct-chart ct-perfect-fourth ct-golden-section" style="height: 300px"></div>
+
+                        <!-- See: js/examples/examples.charts.js for the example code. -->
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- end: page -->
+    </section>
+
+    <div class="modal" id="modal_logged_detail">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="black-ip-address-add" class="ml-3">Ip Address: <span id="ip_address"></span> </label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="black-ip-address-add" class="ml-3">Browser: <span id="browser"></span> </label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="black-ip-address-add" class="ml-3">Logged at: <span id="logged_time"></span> </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <!-- Specific Page Vendor -->
+    <script src="{% static 'client/assets/vendor/select2/js/select2.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/pnotify/pnotify.custom.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/ios7-switch/ios7-switch.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/jquery-appear/jquery-appear.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/owl.carousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/isotope/isotope.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/media/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/chartist/chartist.js' %}"></script>
+
+
+
+
+{% endblock %}
+
+{% block page_js %}
+    <!-- Examples -->
+    <script src="{% static 'client/assets/js/examples/examples.landing.dashboard.js' %}"></script>
+    <script src="{% static 'client/assets/js/examples/examples.dashboard.js' %}"></script>
+    <script src="{% static 'client/assets/js/examples/examples.datatables.default.js' %}"></script>
+    <script src="{% static 'client/assets/js/examples/examples.datatables.row.with.details.js' %}"></script>
+    <script src="{% static 'client/assets/js/examples/examples.datatables.tabletools.js' %}"></script>
+
+
+
+    <script>
+
+        function detailUserLog(id) {
+            $.ajax({
+                url: '/ctgadmin/logged/user/' + id,
+                method: 'get',
+                success: function (res) {
+                    $('#ip_address').html(res['ip']);
+                    $('#browser').html(res['browser']);
+                    $('#logged_time').html(res['time']);
+
+                    $('#modal_logged_detail').modal();
+                }
+            })
+        }
+
+
+
+        /*
+	Chartist: Bar Chart - Overlapping On Mobile
+	*/
+	(function() {
+
+
+	     $.ajax({
+                type: 'get',
+                url: 'getEveyMonthData',
+                data: {
+                },
+                dataType: 'json',
+                 success: function (data1) {
+
+
+                    	if( $('#ChartistOverlappingBarsOnMobile').get(0) ) {
+			var data = {
+				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+				series: [
+					data1
+				]
+			};
+
+			var options = {
+				seriesBarDistance: 10
+			};
+
+			var responsiveOptions = [
+				['screen and (max-width: 640px)', {
+					seriesBarDistance: 5,
+					axisX: {
+						labelInterpolationFnc: function(value) {
+							return value[0];
+						}
+					}
+				}]
+			];
+
+			new Chartist.Bar('#ChartistOverlappingBarsOnMobile', data, options, responsiveOptions);
+		}
+
+
+
+
+                },
+                error: function (data) {}
+            });
+
+
+
+
+
+	})();
+
+
+
+    </script>
+{% endblock %}

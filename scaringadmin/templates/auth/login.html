@@ -1,0 +1,141 @@
+{% load static %}
+
+<!doctype html>
+<html class="fixed">
+	<head>
+
+		<!-- Basic -->
+		<meta charset="UTF-8">
+
+        <title>Admin</title>
+		<meta name="keywords" content="Question Answer How What" />
+		<meta name="description" content="CherryCert">
+		<meta name="author" content="encoad">
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<!-- Web Fonts  -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="{% static 'client/assets/vendor/bootstrap/css/bootstrap.css' %}" />
+		<link rel="stylesheet" href="{% static 'client/assets/vendor/animate/animate.css' %}">
+
+		<link rel="stylesheet" href="{% static 'client/assets/vendor/font-awesome/css/font-awesome.css' %}" />
+		<link rel="stylesheet" href="{% static 'client/assets/vendor/magnific-popup/magnific-popup.css' %}" />
+		<link rel="stylesheet" href="{% static 'client/assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css' %}" />
+
+		<!-- Specific Page Vendor CSS -->
+		<link rel="stylesheet" href="{% static 'client/assets/vendor/owl.carousel/assets/owl.carousel.css' %}" />
+		<link rel="stylesheet" href="{% static 'client/assets/vendor/owl.carousel/assets/owl.theme.default.css' %}" />
+
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="{% static 'client/assets/css/theme.css' %}" />
+
+		<!-- Skin CSS -->
+		<link rel="stylesheet" href="{% static 'client/assets/css/skins/default.css' %}" />
+
+		<!-- Theme Custom CSS -->
+		<link rel="stylesheet" href="{% static 'client/assets/css/custom.css' %}">
+
+		<!-- Head Libs -->
+		<script src="{% static 'client/assets/vendor/modernizr/modernizr.js' %}"></script>
+
+	</head>
+	<body>
+
+		<!-- start: page -->
+		<section class="body-sign">
+			<div class="mt-5">
+				<div class="panel card-sign" style="margin-top: 220px">
+					<div class="card-body">
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}"
+                                     role="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+
+                        {% if error %}
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <strong>Oh snap!</strong> {{ error }}
+                            </div>
+                        {% endif %}
+						<form action="{% url 'sign_in' %}" method="post">
+                            {% csrf_token %}
+							<div class="form-group mb-3">
+								<label>Email</label>
+								<div class="input-group input-group-icon">
+									<input name="email" type="email" class="form-control form-control-lg"/>
+									<span class="input-group-addon">
+										<span class="icon icon-lg">
+											<i class="fa fa-user"></i>
+										</span>
+									</span>
+								</div>
+							</div>
+
+							<div class="form-group mb-3">
+								<div class="clearfix">
+									<label class="float-left">Password</label>
+									<a href="{% url 'forgetpassword' %}" class="float-right">Forget Password?</a>
+								</div>
+								<div class="input-group input-group-icon">
+									<input name="password" type="password" class="form-control form-control-lg" />
+									<span class="input-group-addon">
+										<span class="icon icon-lg">
+											<i class="fa fa-lock"></i>
+										</span>
+									</span>
+								</div>
+							</div>
+
+							<div class="mb-1 text-center">
+								<button class="btn mb-2 ml-1 btn-block mr-1 btn-primary" type="submit">Sign In</button>
+							</div>
+
+                            <div class="mb-1 text-center hidden">
+								 <a class="btn mb-2 ml-1 btn-block mr-1 btn-secondary" href="{% url 'sign_up' %}">Signup</a>
+							</div>
+                        </form>
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<!-- end: page -->
+
+		<!-- Vendor -->
+
+		<script src="{% static 'client/assets/vendor/jquery/jquery.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/popper/umd/popper.min.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/bootstrap/js/bootstrap.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/common/common.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/nanoscroller/nanoscroller.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/magnific-popup/jquery.magnific-popup.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/jquery-placeholder/jquery-placeholder.js' %}"></script>
+
+		<!-- Specific Page Vendor -->
+		<script src="{% static 'client/assets/vendor/jquery-appear/jquery-appear.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/owl.carousel/owl.carousel.js' %}"></script>
+		<script src="{% static 'client/assets/vendor/isotope/isotope.js' %}"></script>
+
+		<!-- Theme Base, Components and Settings -->
+		<script src="{% static 'client/assets/js/theme.js' %}"></script>
+
+		<!-- Theme Custom -->
+		<script src="{% static 'client/assets/js/custom.js' %}"></script>
+
+		<!-- Theme Initialization Files -->
+		<script src="{% static 'client/assets/js/theme.init.js' %}"></script>
+
+
+	</body>
+</html>

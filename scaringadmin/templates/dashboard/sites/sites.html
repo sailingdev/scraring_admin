@@ -1,0 +1,444 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Admin Dashboard</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'client/assets/vendor/datatables/media/css/dataTables.bootstrap4.css' %}"/>
+{% endblock %}
+
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Admin Dashboard</h2>
+
+            <div class="right-wrapper text-right">
+                <ol class="breadcrumbs">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li><span>Dashboard</span></li>
+                </ol>
+
+                <a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
+            </div>
+        </header>
+
+        {#        <!-- start: page -->#}
+        <div class="row">
+            <div class="col-xl-12 col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1 style="display: inline">Site List</h1>
+                    </div>
+
+                    <div class="col-md-6 text-right">
+                        <button type="button" class="mb-1 mt-1 mr-1 btn btn-primary btn-sm" id="btn_add_user">add site
+                        </button>
+                    </div>
+                </div>
+
+
+                <section class="card card-featured-left card-featured-primary mb-3">
+                    <div class="card-body">
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}"
+                                     role="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <table class="table table-bordered table-striped mb-0" id="datatable-default">
+                            <thead>
+                            <tr>
+                                <th>Site Name</th>
+                                <th>Site Url</th>
+                                <th>DirectoryName</th>
+                                <th>CronTime</th>
+                                <th>CronStatus</th>
+                                <th>ScrapStatus</th>
+                                <th>StartedTime</th>
+                                <th>EndedTime</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for item in sites %}
+                                <tr>
+                                    <td>{{ item.site_name }}</td>
+                                    <td><a href="{{ item.site_url }}" target="_blank">{{ item.site_url }}</a></td>
+                                    <td>{{ item.directory_name }}</td>
+                                    <td>{{ item.cron_time }}</td>
+                                    <td>{{ item.cron_status }}</td>
+                                    <td>{{ item.scraped_status }}</td>
+                                    <td>{{ item.start_time }}</td>
+                                    <td>{{ item.end_time }}</td>
+
+                                    <td>
+                                        <div class="btn-group flex-wrap">
+                                            <button type="button"
+                                                    class="mb-1 mt-1 mr-1 btn btn-primary btn-sm dropdown-toggle"
+                                                    data-toggle="dropdown" aria-expanded="false">Action <span
+                                                    class="caret"></span></button>
+                                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                                 style="position: absolute; transform: translate3d(0px, 42px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                <a class="site_edit dropdown-item text-1" href="#"
+                                                   data-siteid="{{ item.id }}">Edit</a>
+                                                <a class="user_delete dropdown-item text-1" href="#" data-siteid="{{ item.id }}">Delete</a>
+                                                <a class="cron_start dropdown-item text-1" href="#" data-siteid="{{ item.id }}">Cron Start</a>
+                                                <a class="cron_stop dropdown-item text-1" href="#" data-siteid="{{ item.id }}">Cron Stop</a>
+                                                <a class="cron_pause dropdown-item text-1" href="#" data-siteid="{{ item.id }}">Cron Pause</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="modal" id="modal_add_site">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Site</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Oh snap!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <form action="{% url "addSite" %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="site_name" placeholder="Site Name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="site_url" placeholder="Site Url" required>
+                            </div>
+                        </div>
+
+
+                          <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="directory_name" placeholder="Directory Name" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="datetime-local" class="form-control" name="cron_time" placeholder="Cron Time" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="mb-1 mt-1 mr-1 btn btn-primary btn-block">Add Site</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="modal" id="modal_edit_site">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Site</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Oh snap!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <form action="{% url "editSite" %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+
+                         <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="siteid"  hidden>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="site_name" placeholder="Site Name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="site_url" placeholder="Site Url" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="directory_name" placeholder="Directory Name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="datetime-local" class="form-control" name="cron_time" placeholder="Cron Time" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="mb-1 mt-1 mr-1 btn btn-primary btn-block">Update Site</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal" id="modal_delete_site">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Site</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Oh snap!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <form action="{% url "deleteSite" %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                               <h3>Are you sure you want to delete the site?</h3>
+                            </div>
+                        </div>
+
+                         <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="siteid" placeholder="siteid" hidden>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="mb-1 mt-1 mr-1 btn btn-danger pull-right">Delete</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+      <div class="modal" id="modal_cron_start">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Udate Cron Job</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Oh snap!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <form action="{% url "updateCronJobStatus" %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <span style="font-size: 16pt">Are you sure you want to </span><span id="cron_status_txt" style="font-size: 16pt"></span>  <span style="font-size: 16pt"> the cron job?</span>
+                            </div>
+                        </div>
+
+                         <div class="form-group row hidden">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="siteid" placeholder="siteid" >
+                            </div>
+                        </div>
+
+                        <div class="form-group row hidden">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="cron_status" placeholder="" >
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="mb-1 mt-1 mr-1 btn btn-danger pull-right">Post</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block js %}
+
+    <script src="{% static 'client/assets/vendor/jquery-appear/jquery-appear.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/owl.carousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/isotope/isotope.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/media/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+{% endblock %}
+
+{% block page_js %}
+
+
+    <script>
+
+        $('#datatable-default').dataTable({});
+
+        $('#btn_add_user').click(function () {
+                    $('input[name="site_name"]').val('');
+                    $('input[name="site_url"]').val('');
+                    $('input[name="directory_name"]').val('');
+                    $('input[name="cron_time"]').val('');
+
+            $('#modal_add_site').modal();
+        });
+
+
+
+        $('a.site_edit').click(function () {
+            var siteid = $(this).data('siteid');
+            $('input[name="siteid"]').val(siteid);
+
+             $.ajax({
+                type: 'get',
+                url: 'getSite',
+                data: {
+                    siteid: siteid
+                },
+                dataType: 'json',
+                 success: function (data) {
+                    $('input[name="site_name"]').val(data.site_name);
+                    $('input[name="site_url"]').val(data.site_url);
+                    $('input[name="directory_name"]').val(data.directory_name);
+                    $('#modal_edit_site').modal();
+                },
+                error: function (data) {}
+            })
+        });
+
+
+
+
+        $('a.user_delete').click(function () {
+            var siteid = $(this).data('siteid');
+            $('input[name="siteid"]').val(siteid);
+            $('#modal_delete_site').modal();
+        });
+
+
+       $('a.cron_start').click(function () {
+            var siteid = $(this).data('siteid');
+            $('input[name="siteid"]').val(siteid);
+            $('input[name="cron_status"]').val("Start");
+            $('#cron_status_txt').text("start");
+            $('#modal_cron_start').modal();
+        });
+
+
+       $('a.cron_stop').click(function () {
+            var siteid = $(this).data('siteid');
+            $('input[name="siteid"]').val(siteid);
+            $('input[name="cron_status"]').val("Stop");
+            $('#cron_status_txt').text("stop");
+            $('#modal_cron_start').modal();
+        });
+
+
+        $('a.cron_pause').click(function () {
+            var siteid = $(this).data('siteid');
+            $('input[name="siteid"]').val(siteid);
+            $('input[name="cron_status"]').val("Pause");
+            $('#cron_status_txt').text("pause");
+            $('#modal_cron_start').modal();
+        })
+
+
+
+
+    </script>
+{% endblock %}

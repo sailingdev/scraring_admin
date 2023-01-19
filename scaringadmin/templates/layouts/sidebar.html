@@ -1,0 +1,102 @@
+{% load static %}
+
+<!-- start: sidebar -->
+    <aside id="sidebar-left" class="sidebar-left">
+
+        <div class="sidebar-header">
+            <div class="sidebar-title">
+                Navigation
+            </div>
+            <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+                <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+        </div>
+
+        <div class="nano">
+            <div class="nano-content">
+                <nav id="menu" class="nav-main" role="navigation">
+                    <ul class="nav nav-main">
+                        <li  {% if request.path == "/" %} class="nav-active" {% endif %}>
+                            <a class="nav-link" href="/">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li  {% if request.path == "/users" %} class="nav-active" {% endif %}>
+                            <a class="nav-link" href="{% url 'users' %}">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span>Users</span>
+                            </a>
+                        </li>
+                        <li {% if request.path == "/sites" %} class="nav-active" {% endif %}>
+                            <a class="nav-link" href="{% url "sites" %}">
+                                <i class="fa fa-sitemap" aria-hidden="true"></i>
+                                <span>Sites & Scraper Setting</span>
+                            </a>
+                        </li>
+                        <li {% if request.path == "/data" %} class="nav-active" {% endif %}>
+                            <a class="nav-link" href="{% url "data" %}">
+                                <i class="fa fa-database" aria-hidden="true"></i>
+                                <span>Data</span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-parent {% if request.path == "/scarpingSettings"%} nav-active {% endif %} {% if request.path == "/apiSettings"%} nav-active {% endif %}
+                            {% if request.path == "/smsSettings"%} nav-active {% endif %} {% if request.path == "/emailSettings"%} nav-active {% endif %} {% if request.path == "/scraperSettings"%} nav-active {% endif %}">
+                            <a class="nav-link" href="#">
+                                <i class="fa fa-gear" aria-hidden="true"></i>
+                                <span>Settings</span>
+                            </a>
+                            <ul class="nav nav-children">
+                                <li class="hidden">
+                                    <a class="nav-link" href="{% url "scarpingSettings" %}">
+                                        Scarping Settings
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="{% url "apiSettings" %}">
+                                         Api Settings
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="{% url "emailSettings" %}">
+                                         Email Settings
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="nav-link" href="{% url "smsSettings" %}">
+                                         SMS Settings
+                                    </a>
+                                </li>
+
+                                <li class="hidden">
+                                    <a class="nav-link" href="{% url "scraperSettings" %}">
+                                         Scraper Settings
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <script>
+                // Maintain Scroll Position
+                if (typeof localStorage !== 'undefined') {
+                    if (localStorage.getItem('sidebar-left-position') !== null) {
+                        var initialPosition = localStorage.getItem('sidebar-left-position'),
+                            sidebarLeft = document.querySelector('#sidebar-left .nano-content');
+                        sidebarLeft.scrollTop = initialPosition;
+                    }
+                }
+            </script>
+
+
+        </div>
+
+    </aside>
+    <!-- end: sidebar -->

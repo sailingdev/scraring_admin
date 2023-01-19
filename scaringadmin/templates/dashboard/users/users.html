@@ -1,0 +1,423 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Admin Dashboard</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'client/assets/vendor/datatables/media/css/dataTables.bootstrap4.css' %}"/>
+{% endblock %}
+
+
+{% block content %}
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Admin Dashboard</h2>
+
+            <div class="right-wrapper text-right">
+                <ol class="breadcrumbs">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li><span>Dashboard</span></li>
+                </ol>
+
+                <a class="sidebar-right-toggle"><i class="fa fa-chevron-left"></i></a>
+            </div>
+        </header>
+
+        {#        <!-- start: page -->#}
+        <div class="row">
+            <div class="col-xl-12 col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1 style="display: inline">Users</h1>
+                    </div>
+
+                    <div class="col-md-6 text-right">
+                        <button type="button" class="mb-1 mt-1 mr-1 btn btn-primary btn-sm" id="btn_add_user">Add User
+                        </button>
+                    </div>
+                </div>
+
+
+                <section class="card card-featured-left card-featured-primary mb-3">
+                    <div class="card-body">
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}"
+                                     role="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <table class="table table-bordered table-striped mb-0" id="datatable-default">
+                            <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for user in users %}
+                                <tr>
+                                    {% if user.photo == '' %}
+                                    <td><img src="/media/img/users/user_avatar.png" width="50" height="50" class="rounded-circle mr-4"> {{ user.first_name }}</td>
+                                    {% else %}
+                                    <td><img src="/media/img/users/{{ user.photo }}" width="50" height="50" class="rounded-circle mr-4"> {{ user.first_name }}</td>
+                                    {% endif %}
+
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.phonenumber }}</td>
+                                    <td>{{ user.address }}</td>
+                                    <td>
+                                        <div class="btn-group flex-wrap">
+                                            <button type="button" class="mb-1 mt-1 mr-1 btn btn-primary btn-sm dropdown-toggle"
+                                                    data-toggle="dropdown" aria-expanded="false">Action <span
+                                                    class="caret"></span></button>
+                                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                                 style="position: absolute; transform: translate3d(0px, 42px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                <a class="user_edit dropdown-item text-1" href="#" data-userid="{{ user.id }}">Edit</a>
+                                                <a class="user_block dropdown-item text-1" href="#" data-userid="{{ user.id }}">Block</a>
+                                                <a class="user_delete dropdown-item text-1" href="#" data-userid="{{ user.id }}">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="modal" id="modal_add_user">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add User</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Oh snap!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <form action="{% url "addUser" %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="full_name" placeholder="Full Name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="email" class="form-control" name="email" placeholder="Email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="phonenumber" placeholder="Phone Number" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="password" class="form-control" name="password" placeholder="Password" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="address" placeholder="Address" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="file" class="form-control" name="photo" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="mb-1 mt-1 mr-1 btn btn-primary btn-block">Add User</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="modal" id="modal_edit_user">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit User</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Oh snap!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <form action="{% url "editUser" %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+
+                         <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="userid" placeholder="userid" hidden>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="full_name" placeholder="Full Name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="email" class="form-control" name="email" placeholder="Email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="phonenumber" placeholder="Phone Number" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="password" class="form-control" name="password" placeholder="Password" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="address" placeholder="Address" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="file" class="form-control" name="photo">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="mb-1 mt-1 mr-1 btn btn-primary btn-block">Update User</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal" id="modal_delete_user">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete and Ban User</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Oh snap!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <form action="{% url "deleteUser" %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                               <h3>Are you sure you want to delete the user?</h3>
+                            </div>
+                        </div>
+
+                         <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="userid" placeholder="userid" hidden>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="mb-1 mt-1 mr-1 btn btn-danger pull-right">Delete</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+     <div class="modal" id="modal_block_user">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Block User</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Oh snap!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <form action="{% url "blockUser" %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                               <h3>Are you sure you want to block the user?</h3>
+                            </div>
+                        </div>
+
+                         <div class="form-group row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" name="block_userid" placeholder="userid" hidden>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="mb-1 mt-1 mr-1 btn btn-danger pull-right">Block</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+
+    <script src="{% static 'client/assets/vendor/jquery-appear/jquery-appear.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/owl.carousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/isotope/isotope.js' %}"></script>
+
+    <script src="{% static 'client/assets/vendor/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/media/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'client/assets/vendor/datatables/extras/TableTools/Buttons-1.4.2/js/dataTables.buttons.min.js' %}"></script>
+{% endblock %}
+
+{% block page_js %}
+
+
+    <script>
+
+        $('#datatable-default').dataTable({});
+
+        $('#btn_add_user').click(function () {
+                    $('input[name="full_name"]').val('');
+                    $('input[name="email"]').val('');
+                    $('input[name="phonenumber"]').val('');
+                    $('input[name="address"]').val('');
+            $('#modal_add_user').modal();
+        });
+
+
+
+        $('a.user_edit').click(function () {
+            var userid = $(this).data('userid');
+            $('input[name="userid"]').val(userid);
+
+             $.ajax({
+                type: 'get',
+                url: 'getUser',
+                data: {
+                    userid: userid
+                },
+                dataType: 'json',
+                 success: function (data) {
+                    $('input[name="full_name"]').val(data.first_name);
+                    $('input[name="email"]').val(data.username);
+                    $('input[name="phonenumber"]').val(data.phonenumber);
+                    $('input[name="address"]').val(data.address);
+                    $('#modal_edit_user').modal();
+                },
+                error: function (data) {}
+            })
+        });
+
+
+
+
+        $('a.user_delete').click(function () {
+            var userid = $(this).data('userid');
+            $('input[name="userid"]').val(userid);
+            $('#modal_delete_user').modal();
+        })
+
+        $('a.user_block').click(function () {
+            var userid = $(this).data('userid');
+            $('input[name="block_userid"]').val(userid);
+            $('#modal_block_user').modal();
+        })
+
+
+    </script>
+{% endblock %}
